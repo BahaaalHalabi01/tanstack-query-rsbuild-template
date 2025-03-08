@@ -11,65 +11,83 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as pathlessLayoutImport } from './routes/__pathlessLayout'
 import { Route as IndexImport } from './routes/index'
 
 // Create/Update Routes
 
+const pathlessLayoutRoute = pathlessLayoutImport.update({
+  id: '/__pathlessLayout',
+  getParentRoute: () => rootRoute,
+} as any)
+
 const IndexRoute = IndexImport.update({
-	id: '/',
-	path: '/',
-	getParentRoute: () => rootRoute,
+  id: '/',
+  path: '/',
+  getParentRoute: () => rootRoute,
 } as any)
 
 // Populate the FileRoutesByPath interface
 
 declare module '@tanstack/react-router' {
-	interface FileRoutesByPath {
-		'/': {
-			id: '/'
-			path: '/'
-			fullPath: '/'
-			preLoaderRoute: typeof IndexImport
-			parentRoute: typeof rootRoute
-		}
-	}
+  interface FileRoutesByPath {
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexImport
+      parentRoute: typeof rootRoute
+    }
+    '/__pathlessLayout': {
+      id: '/__pathlessLayout'
+      path: ''
+      fullPath: ''
+      preLoaderRoute: typeof pathlessLayoutImport
+      parentRoute: typeof rootRoute
+    }
+  }
 }
 
 // Create and export the route tree
 
 export interface FileRoutesByFullPath {
-	'/': typeof IndexRoute
+  '/': typeof IndexRoute
+  '': typeof pathlessLayoutRoute
 }
 
 export interface FileRoutesByTo {
-	'/': typeof IndexRoute
+  '/': typeof IndexRoute
+  '': typeof pathlessLayoutRoute
 }
 
 export interface FileRoutesById {
-	__root__: typeof rootRoute
-	'/': typeof IndexRoute
+  __root__: typeof rootRoute
+  '/': typeof IndexRoute
+  '/__pathlessLayout': typeof pathlessLayoutRoute
 }
 
 export interface FileRouteTypes {
-	fileRoutesByFullPath: FileRoutesByFullPath
-	fullPaths: '/'
-	fileRoutesByTo: FileRoutesByTo
-	to: '/'
-	id: '__root__' | '/'
-	fileRoutesById: FileRoutesById
+  fileRoutesByFullPath: FileRoutesByFullPath
+  fullPaths: '/' | ''
+  fileRoutesByTo: FileRoutesByTo
+  to: '/' | ''
+  id: '__root__' | '/' | '/__pathlessLayout'
+  fileRoutesById: FileRoutesById
 }
 
 export interface RootRouteChildren {
-	IndexRoute: typeof IndexRoute
+  IndexRoute: typeof IndexRoute
+  pathlessLayoutRoute: typeof pathlessLayoutRoute
 }
 
 const rootRouteChildren: RootRouteChildren = {
-	IndexRoute: IndexRoute,
+  IndexRoute: IndexRoute,
+  pathlessLayoutRoute: pathlessLayoutRoute,
 }
 
 export const routeTree = rootRoute
-	._addFileChildren(rootRouteChildren)
-	._addFileTypes<FileRouteTypes>()
+  ._addFileChildren(rootRouteChildren)
+  ._addFileTypes<FileRouteTypes>()
 
 /* ROUTE_MANIFEST_START
 {
@@ -77,11 +95,15 @@ export const routeTree = rootRoute
     "__root__": {
       "filePath": "__root.tsx",
       "children": [
-        "/"
+        "/",
+        "/__pathlessLayout"
       ]
     },
     "/": {
       "filePath": "index.tsx"
+    },
+    "/__pathlessLayout": {
+      "filePath": "__pathlessLayout.tsx"
     }
   }
 }
