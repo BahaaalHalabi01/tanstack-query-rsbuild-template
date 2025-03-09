@@ -4,14 +4,14 @@ import { pluginTypeCheck } from '@rsbuild/plugin-type-check'
 import { TanStackRouterRspack } from '@tanstack/router-plugin/rspack'
 
 export default defineConfig({
-  plugins: [pluginReact(), pluginTypeCheck()],
-  tools: {
-    rspack: {
-      bail: false,
-      cache: true,
-      plugins: [
-        TanStackRouterRspack({ target: 'react', autoCodeSplitting: true }),
-      ],
-    },
-  },
+	plugins: [pluginReact(), pluginTypeCheck()],
+	tools: {
+		rspack: {
+			bail: false,
+			cache: true,
+			plugins: [
+				TanStackRouterRspack({ target: 'react', autoCodeSplitting: true }),
+			],
+		},
+	},
 })

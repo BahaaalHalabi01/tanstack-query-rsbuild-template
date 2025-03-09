@@ -1,15 +1,14 @@
 import { createFileRoute } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/__pathlessLayout')({
-  component: RouteComponent,
-  loader: async ({ context }) => {
+	component: RouteComponent,
+	loader: async ({ context }) => {
+		console.log('aoeaeo')
 
-    console.log('aoeaeo')
-
-    return {}
-  },
+		return {}
+	},
 })
 
 function RouteComponent() {
-  return <div>Hello "/__layout"!</div>
+	return <div>Hello "/__layout"!</div>
 }
